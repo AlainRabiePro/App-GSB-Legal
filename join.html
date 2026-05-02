@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NextLance — Rejoindre une équipe</title>
+<meta name="description" content="Rejoindre une équipe sur NextLance avec votre code d'invitation." />
+<link rel="stylesheet" href="/style.css" />
+<style>
+  .join-hero { text-align: center; padding: 48px 24px 24px; }
+  .join-hero h1 { font-size: 32px; letter-spacing: -1px; margin: 0 0 12px; }
+  .join-hero p { font-size: 16px; color: var(--muted); max-width: 460px; margin: 0 auto; }
+  .code-box {
+    background: var(--card);
+    border: 2px dashed var(--link);
+    border-radius: var(--radius);
+    margin: 24px auto;
+    max-width: 320px;
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .code-box .label {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+  .code-box .code {
+    color: var(--link);
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    margin-top: 6px;
+  }
+  .stores-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .store-btn {
+    background: #111;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .store-btn.secondary { background: #fff; color: #111; border: 1px solid var(--border); }
+  .steps-list {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 24px 0;
+    padding: 24px;
+  }
+  .steps-list ol { padding-left: 22px; margin: 0; }
+  .steps-list li { margin: 8px 0; color: var(--muted); }
+  .steps-list strong { color: var(--text); }
+  .no-code {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: var(--radius);
+    color: #92400e;
+    padding: 16px 20px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <a class="brand" href="/">Next<span>Lance</span></a>
+    <nav>
+      <a href="/cgu.html">CGU</a>
+      <a href="/privacy.html">Confidentialité</a>
+      <a href="/legal.html">Mentions légales</a>
+      <a href="/support.html">Support</a>
+    </nav>
+  </div>
+</header>
+
+<section class="join-hero">
+  <h1>👋 Bienvenue dans l'équipe</h1>
+  <p>Vous avez été invité à rejoindre une équipe sur NextLance. Voici votre code d'invitation :</p>
+
+  <div id="codeBox" class="code-box" style="display:none">
+    <div class="label">Votre code</div>
+    <div id="codeValue" class="code">—</div>
+  </div>
+
+  <div id="noCodeBox" class="no-code" style="display:none">
+    Aucun code d'invitation détecté dans le lien. Demandez à votre administrateur de vous renvoyer l'invitation.
+  </div>
+</section>
+
+<main>
+  <div class="steps-list">
+    <h2 style="font-size: 16px; margin: 0 0 12px;">Comment rejoindre l'équipe :</h2>
+    <ol>
+      <li><strong>Téléchargez l'application NextLance</strong> sur votre téléphone</li>
+      <li>À l'ouverture, choisissez <strong>« Je rejoins une équipe »</strong></li>
+      <li>Saisissez le code <strong id="codeInline">ci-dessus</strong> et créez votre compte</li>
+      <li>Vous accédez immédiatement aux outils — <strong>aucun paiement requis</strong>, votre employeur prend en charge votre accès</li>
+    </ol>
+  </div>
+
+  <div class="stores-row">
+    <a class="store-btn" href="https://apps.apple.com/app/nextlance" target="_blank" rel="noopener">📱 App Store</a>
+    <a class="store-btn secondary" href="https://play.google.com/store/apps/details?id=com.alainrabie.nextlance" target="_blank" rel="noopener">🤖 Google Play</a>
+  </div>
+
+  <p style="text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px;">
+    Une question ? <a href="mailto:contact@arintegration.fr" style="color: var(--link);">contact@arintegration.fr</a>
+  </p>
+</main>
+
+<footer>
+  © 2026 NextLance — édité par Alain RABIE.
+  <br />
+  <a href="/cgu.html">CGU</a> ·
+  <a href="/privacy.html">Confidentialité</a> ·
+  <a href="/legal.html">Mentions légales</a> ·
+  <a href="/support.html">Support</a>
+</footer>
+
+<script>
+  // Récupère le code depuis l'URL (?code=XXX) et l'affiche
+  const params = new URLSearchParams(window.location.search);
+  const code = (params.get('code') || '').trim().toUpperCase();
+  if (code) {
+    document.getElementById('codeBox').style.display = 'block';
+    document.getElementById('codeValue').textContent = code;
+    document.getElementById('codeInline').textContent = code;
+  } else {
+    document.getElementById('noCodeBox').style.display = 'block';
+  }
+
+  // Tentative d'ouverture automatique de l'app si installée (Universal Link
+  // futur). Pour l'instant, scheme custom en fallback.
+  if (code) {
+    setTimeout(() => {
+      window.location.href = 'nextlance://register?code=' + encodeURIComponent(code);
+    }, 1500);
+  }
+</script>
+</body>
+</html>
